@@ -16,9 +16,9 @@ const validarJWT = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payload = jwt.verify(token, "clavesecreta") as JwtPayload;
 
-        const { id } = payload;
+        const { _id } = payload;
 
-        const usuarioConfirmado: IUser | null = await User.findById(id);
+        const usuarioConfirmado: IUser | null = await User.findById(_id);
 
         if (!usuarioConfirmado) {
             return res.status(401).json({

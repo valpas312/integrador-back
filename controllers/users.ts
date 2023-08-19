@@ -49,7 +49,7 @@ export const verifyUser = async (req: Request, res: Response) => {
             });
         }
 
-        await User.findByIdAndUpdate(usuario.email, { verified: true });
+        await User.findOneAndUpdate({ email }, { verified: true });
 
         res.json({
             message: "Email verificado correctamente",
@@ -58,7 +58,8 @@ export const verifyUser = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.json({
-            message: "Algo salio mal"
+            message: "Algo salio mal",
+            error
         });
     }
 };

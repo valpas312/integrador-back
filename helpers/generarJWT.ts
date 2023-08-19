@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-export const generarJWT = (id: string): Promise<string> => {
+export const generarJWT = (_id: string): Promise<string> => {
     return new Promise((resolve, reject) => {
-        const payload = { id };
+        const payload = { _id };
 
         jwt.sign(payload, "clavesecreta", {
             expiresIn: '12h'

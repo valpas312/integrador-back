@@ -11,10 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isVerified = void 0;
 const isVerified = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarioConfirmado = req.body.usuarioConfirmado;
-    if (!usuarioConfirmado.verificado) {
+    const { usuarioConfirmado } = req.body;
+    if (!usuarioConfirmado.verified) {
         return res.status(401).json({
-            msg: "Usuario no verificado"
+            msg: "Usuario no verificado",
+            usuarioConfirmado
         });
     }
     next();

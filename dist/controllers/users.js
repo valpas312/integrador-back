@@ -62,7 +62,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 message: "Codigo incorrecto"
             });
         }
-        yield user_1.default.findByIdAndUpdate(usuario.email, { verified: true });
+        yield user_1.default.findOneAndUpdate({ email }, { verified: true });
         res.json({
             message: "Email verificado correctamente",
             usuario
@@ -71,7 +71,8 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         console.log(error);
         res.json({
-            message: "Algo salio mal"
+            message: "Algo salio mal",
+            error
         });
     }
 });

@@ -12,8 +12,6 @@ const express_validator_1 = require("express-validator");
 const router = (0, express_1.Router)();
 router.get("/", [validarJWT_1.default, recolectarErrores_1.recolectarErrores], turnos_1.getTurnos);
 router.post("/", [validarJWT_1.default, validarVerificado_1.isVerified,
-    (0, express_validator_1.check)("fecha", "La fecha es obligatoria").not().isEmpty(),
-    (0, express_validator_1.check)("hora", "La hora es obligatoria").not().isEmpty(),
     (0, express_validator_1.check)("especialidad", "La especialidad es obligatoria").not().isEmpty(),
     (0, express_validator_1.check)("medico", "El médico es obligatorio").not().isEmpty(),
     recolectarErrores_1.recolectarErrores

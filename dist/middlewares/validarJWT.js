@@ -23,8 +23,8 @@ const validarJWT = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
     try {
         const payload = jsonwebtoken_1.default.verify(token, "clavesecreta");
-        const { id } = payload;
-        const usuarioConfirmado = yield user_1.default.findById(id);
+        const { _id } = payload;
+        const usuarioConfirmado = yield user_1.default.findById(_id);
         if (!usuarioConfirmado) {
             return res.status(401).json({
                 msg: "Token no válido - usuario no existe en DB"

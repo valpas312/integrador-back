@@ -14,18 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTurno = exports.getTurnos = void 0;
 const turno_1 = __importDefault(require("../models/turno"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getTurnos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarioId = req.body.usuuarioConfirmado._id;
-    const turnos = yield turno_1.default.find({ paciente: usuarioId }).populate('paciente', 'nombre apellido').exec();
+    const usuarioId = req.body._id;
+    const turnos = yield turno_1.default.find({ paciente: usuarioId }).populate('paciente', 'nombre').exec();
     res.json({
         data: [...turnos]
     });
 });
 exports.getTurnos = getTurnos;
 const createTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarioId = req.body.usuuarioConfirmado._id;
+    const token = req.header("x-token");
+    const payload = jsonwebtoken_1.default.verify(token, "clavesecreta");
+    const { _id } = payload;
     const turnoData = req.body;
-    const data = new turno_1.default(Object.assign(Object.assign({}, turnoData), { paciente: usuarioId, fecha: new Date(), estado: 'Pendiente a confirmar' }));
+    const data = new turno_1.default(Object.assign(Object.assign({}, turnoData), { reservacion: new Date(), paciente: _id, estado: "Pendiente a confirmar" }));
     const turno = new turno_1.default(data);
     yield turno.save();
     res.json({
