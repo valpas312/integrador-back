@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
-import Turno, {ITurno} from "../models/turno";
+import Turno, { ITurno } from "../models/turno";
 import { ObjectId } from "mongoose";
 import jwt, { JwtPayload } from "jsonwebtoken";
- 
+
 export const getTurnos = async (req: Request, res: Response) => {
     const usuarioId: ObjectId = req.body._id;
 
@@ -23,7 +23,7 @@ export const createTurno = async (req: Request, res: Response) => {
     const turnoData = req.body;
 
     const data: ITurno = new Turno({
-       ...turnoData,
+        ...turnoData,
         reservacion: new Date(),
         paciente: _id,
         estado: "Pendiente a confirmar"
@@ -35,6 +35,29 @@ export const createTurno = async (req: Request, res: Response) => {
 
     res.json({
         msg: 'Turno creado',
+        data: turno
+    });
+};
+
+export const softDeleteTurno = async (req: Request, res: Response) => {
+    const { _id } = req.params;
+
+    const turno = await Turno.findByIdAndUpdate(_id, { estado: "Cancelado" }, { new: true });
+
+    res.json({
+        msg: 'Turno eliminado',
+        data: turno
+    });
+};
+
+
+export const hardDeleteTurno = async (req: Request, res: Response) => {
+    const { _id } = req.params;
+
+    const turno = await Turno.findByIdAndDelete(_id);
+
+    res.json({
+        msg: 'Turno eliminado',
         data: turno
     });
 };

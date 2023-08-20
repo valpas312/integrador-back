@@ -16,4 +16,6 @@ router.post("/", [validarJWT_1.default, validarVerificado_1.isVerified,
     (0, express_validator_1.check)("medico", "El médico es obligatorio").not().isEmpty(),
     recolectarErrores_1.recolectarErrores
 ], turnos_1.createTurno);
+router.delete("/soft/:_id", [validarJWT_1.default, recolectarErrores_1.recolectarErrores], turnos_1.softDeleteTurno);
+router.delete("/hard/:_id", [validarJWT_1.default, recolectarErrores_1.recolectarErrores], turnos_1.hardDeleteTurno);
 exports.default = router;

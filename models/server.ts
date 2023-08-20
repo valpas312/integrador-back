@@ -1,4 +1,4 @@
-import express, {Express} from 'express';
+import express, { Express } from 'express';
 import { conectarDB } from '../db/config';
 import routerU from '../routes/users';
 import routerT from '../routes/turnos';

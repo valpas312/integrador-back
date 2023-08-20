@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTurno = exports.getTurnos = void 0;
+exports.hardDeleteTurno = exports.softDeleteTurno = exports.createTurno = exports.getTurnos = void 0;
 const turno_1 = __importDefault(require("../models/turno"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getTurnos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -37,3 +37,21 @@ const createTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.createTurno = createTurno;
+const softDeleteTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { _id } = req.params;
+    const turno = yield turno_1.default.findByIdAndUpdate(_id, { estado: "Cancelado" }, { new: true });
+    res.json({
+        msg: 'Turno eliminado',
+        data: turno
+    });
+});
+exports.softDeleteTurno = softDeleteTurno;
+const hardDeleteTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { _id } = req.params;
+    const turno = yield turno_1.default.findByIdAndDelete(_id);
+    res.json({
+        msg: 'Turno eliminado',
+        data: turno
+    });
+});
+exports.hardDeleteTurno = hardDeleteTurno;

@@ -1,4 +1,4 @@
-import { Model, Schema, Types,model } from 'mongoose';
+import { Model, Schema, Types, model } from 'mongoose';
 
 export interface ITurno {
     fechayhora?: Date;
@@ -17,6 +17,11 @@ const turnoSchema = new Schema<ITurno>({
     especialidad: { type: String, required: true },
     estado: { type: String, default: "Pendiente a confirmar", required: true },
 });
+
+turnoSchema.methods.toJSON = function () {
+    const { __v, ...turno } = this.toObject();
+    return turno;
+};
 
 const Turno: Model<ITurno> = model<ITurno>('Turno', turnoSchema);
 
