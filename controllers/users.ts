@@ -8,20 +8,20 @@ import { generarJWT } from '../helpers/generarJWT';
 export const createUser = async (req: Request, res: Response) => {
     const { dni, nombre, email, contraseña, }: IUser = req.body
 
-    const student = new User({ dni, nombre, email, contraseña });
+    const user = new User({ dni, nombre, email, contraseña });
 
     const salt = bcryptjs.genSaltSync();
-    student.contraseña = bcryptjs.hashSync(contraseña, salt);
+    user.contraseña = bcryptjs.hashSync(contraseña, salt);
 
-    student.code = randomstring.generate(6);
+    user.code = randomstring.generate(6);
 
-    await student.save();
+    await user.save();
 
-    sendEmail(email, student.code);
+    sendEmail(email, user.code);
 
     res.json({
         message: "Usuario creado correctamente",
-        student
+        user
     });
 };
 
@@ -67,9 +67,9 @@ export const verifyUser = async (req: Request, res: Response) => {
 export const getUsers = async (req: Request, res: Response) => {
     const condicion = { estado: true };
 
-    const students: IUser[] = await User.find(condicion);
+    const usuarios: IUser[] = await User.find(condicion);
 
-    if (!students) {
+    if (!usuarios) {
         return res.json({
             message: "Usuarios no encontrados"
         });
@@ -77,16 +77,16 @@ export const getUsers = async (req: Request, res: Response) => {
 
     res.json({
         message: "Usuarios obtenidos correctamente",
-        students
+        usuarios
     });
 };
 
 export const getUser = async (req: Request, res: Response) => {
     const { dni } = req.params;
 
-    const student: IUser | null = await User.findOne({ dni });
+    const usuario: IUser | null = await User.findOne({ dni });
 
-    if (!student) {
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
@@ -94,7 +94,7 @@ export const getUser = async (req: Request, res: Response) => {
 
     res.json({
         message: "Usuario obtenido correctamente",
-        student
+        usuario
     });
 };
 
@@ -103,10 +103,10 @@ export const updateUser = async (req: Request, res: Response) => {
 
     const { estado, ...data } = req.body;
 
-    const student = await User.findOneAndUpdate({ dni }, data, { new: true });
+    const usuario = await User.findOneAndUpdate({ dni }, data, { new: true });
 
 
-    if (!student) {
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
@@ -114,16 +114,16 @@ export const updateUser = async (req: Request, res: Response) => {
 
     res.json({
         message: "Usuario actualizado correctamente",
-        student
+        usuario
     });
 };
 
 export const hardDeleteUser = async (req: Request, res: Response) => {
     const { dni } = req.params;
 
-    const student = await User.findOneAndDelete({ dni });
+    const usuario = await User.findOneAndDelete({ dni });
 
-    if (!student) {
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
@@ -131,16 +131,16 @@ export const hardDeleteUser = async (req: Request, res: Response) => {
 
     res.json({
         message: "Usuario eliminado correctamente",
-        student
+        usuario
     });
 };
 
 export const softDeleteUser = async (req: Request, res: Response) => {
     const { dni } = req.params;
 
-    const student = await User.findOneAndUpdate({ dni }, { estado: false }, { new: true });
+    const usuario = await User.findOneAndUpdate({ dni }, { estado: false }, { new: true });
 
-    if (!student) {
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
@@ -148,7 +148,7 @@ export const softDeleteUser = async (req: Request, res: Response) => {
 
     res.json({
         message: "Usuario eliminado correctamente",
-        student
+        usuario
     });
 };
 
