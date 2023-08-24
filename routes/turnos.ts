@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getTurnos, createTurno, softDeleteTurno, hardDeleteTurno } from "../controllers/turnos";
+import { getTurnos, verifyTurno, createTurno, softDeleteTurno, hardDeleteTurno } from "../controllers/turnos";
 import validarJWT from "../middlewares/validarJWT";
 import { recolectarErrores } from "../middlewares/recolectarErrores";
 import { isVerified } from "../middlewares/validarVerificado";
@@ -14,6 +14,8 @@ router.post("/", [validarJWT, isVerified,
     check("medico", "El médico es obligatorio").not().isEmpty(),
     recolectarErrores
 ], createTurno)
+
+router.put("/:_id", [validarJWT, recolectarErrores], verifyTurno);
 
 router.delete("/soft/:_id", [validarJWT, recolectarErrores], softDeleteTurno);
 

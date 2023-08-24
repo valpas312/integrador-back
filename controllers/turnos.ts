@@ -39,6 +39,17 @@ export const createTurno = async (req: Request, res: Response) => {
     });
 };
 
+export const verifyTurno = async (req: Request, res: Response) => {
+    const { _id } = req.params;
+
+    const turno = await Turno.findByIdAndUpdate(_id, { estado: "Confirmado" }, { new: true });
+
+    res.json({
+        msg: 'Turno confirmado',
+        data: turno
+    });
+};
+
 export const softDeleteTurno = async (req: Request, res: Response) => {
     const { _id } = req.params;
 
