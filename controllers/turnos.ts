@@ -13,6 +13,38 @@ export const getTurnos = async (req: Request, res: Response) => {
     });
 };
 
+export const getTurnosPendientes = async (req: Request, res: Response) => {
+    const turnos: ITurno[] = await Turno.find({ estado: "Pendiente a confirmar" }).populate('paciente', 'nombre').exec();
+
+    res.json({
+        data: [...turnos]
+    });
+};
+
+export const getTurnosConfirmados = async (req: Request, res: Response) => {
+    const turnos: ITurno[] = await Turno.find({ estado: "Confirmado" }).populate('paciente', 'nombre').exec();
+
+    res.json({
+        data: [...turnos]
+    });
+};
+
+export const getTurnosCancelados = async (req: Request, res: Response) => {
+    const turnos: ITurno[] = await Turno.find({ estado: "Cancelado" }).populate('paciente', 'nombre').exec();
+
+    res.json({
+        data: [...turnos]
+    });
+};
+
+export const getTurnosAsistidos = async (req: Request, res: Response) => {
+    const turnos: ITurno[] = await Turno.find({ fechayhora: { $lt: new Date() } }).populate('paciente', 'nombre').exec();
+
+    res.json({
+        data: [...turnos]
+    });
+};
+
 export const createTurno = async (req: Request, res: Response) => {
     const token = req.header("x-token") as string;
 
