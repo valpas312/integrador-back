@@ -12,17 +12,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hardDeleteTurno = exports.softDeleteTurno = exports.createTurno = exports.getTurnos = void 0;
+exports.hardDeleteTurno = exports.softDeleteTurno = exports.verifyTurno = exports.createTurno = exports.getTurnos = void 0;
 const turno_1 = __importDefault(require("../models/turno"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getTurnos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const usuarioId = req.body._id;
-    const turnos = yield turno_1.default.find({ paciente: usuarioId }).populate('paciente', 'nombre').exec();
+    const token = req.header("x-token");
+    const payload = jsonwebtoken_1.default.verify(token, "clavesecreta");
+    const { _id } = payload;
+    const turnos = yield turno_1.default.find({ paciente: _id }).populate('paciente');
     res.json({
         data: [...turnos]
     });
 });
 exports.getTurnos = getTurnos;
+// export const getTurnosPendientes = async (req: Request, res: Response) => {
+//     const turnos: ITurno[] = await Turno.find({ estado: "Pendiente a confirmar" }).populate('paciente', 'nombre').exec();
+//     res.json({
+//         data: [...turnos]
+//     });
+// };
+// export const getTurnosConfirmados = async (req: Request, res: Response) => {
+//     const turnos: ITurno[] = await Turno.find({ estado: "Confirmado" }).populate('paciente', 'nombre').exec();
+//     res.json({
+//         data: [...turnos]
+//     });
+// };
+// export const getTurnosCancelados = async (req: Request, res: Response) => {
+//     const turnos: ITurno[] = await Turno.find({ estado: "Cancelado" }).populate('paciente', 'nombre').exec();
+//     res.json({
+//         data: [...turnos]
+//     });
+// };
+// export const getTurnosAsistidos = async (req: Request, res: Response) => {
+//     const turnos: ITurno[] = await Turno.find({ fechayhora: { $lt: new Date() } }).populate('paciente', 'nombre').exec();
+//     res.json({
+//         data: [...turnos]
+//     });
+// };
 const createTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header("x-token");
     const payload = jsonwebtoken_1.default.verify(token, "clavesecreta");
@@ -37,6 +63,15 @@ const createTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.createTurno = createTurno;
+const verifyTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { _id } = req.params;
+    const turno = yield turno_1.default.findByIdAndUpdate(_id, { estado: "Confirmado" }, { new: true });
+    res.json({
+        msg: 'Turno confirmado',
+        data: turno
+    });
+});
+exports.verifyTurno = verifyTurno;
 const softDeleteTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = req.params;
     const turno = yield turno_1.default.findByIdAndUpdate(_id, { estado: "Cancelado" }, { new: true });

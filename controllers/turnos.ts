@@ -4,9 +4,13 @@ import { ObjectId } from "mongoose";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const getTurnos = async (req: Request, res: Response) => {
-    const usuarioId: ObjectId = req.body._id;
+    const token = req.header("x-token") as string;
 
-    const turnos: ITurno[] = await Turno.find({ paciente: usuarioId }).populate('paciente', 'users').exec();
+    const payload = jwt.verify(token, "clavesecreta") as JwtPayload;
+
+    const { _id } = payload;
+
+    const turnos: ITurno[] = await Turno.find({ paciente: _id }).populate('paciente');
 
     res.json({
         data: [...turnos]

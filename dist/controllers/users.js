@@ -31,15 +31,15 @@ const randomstring_1 = __importDefault(require("randomstring"));
 const generarJWT_1 = require("../helpers/generarJWT");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni, nombre, email, contraseña, } = req.body;
-    const student = new user_1.default({ dni, nombre, email, contraseña });
+    const user = new user_1.default({ dni, nombre, email, contraseña });
     const salt = bcryptjs_1.default.genSaltSync();
-    student.contraseña = bcryptjs_1.default.hashSync(contraseña, salt);
-    student.code = randomstring_1.default.generate(6);
-    yield student.save();
-    (0, mail_1.sendEmail)(email, student.code);
+    user.contraseña = bcryptjs_1.default.hashSync(contraseña, salt);
+    user.code = randomstring_1.default.generate(6);
+    yield user.save();
+    (0, mail_1.sendEmail)(email, user.code);
     res.json({
         message: "Usuario creado correctamente",
-        student
+        user
     });
 });
 exports.createUser = createUser;
@@ -79,72 +79,72 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.verifyUser = verifyUser;
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const condicion = { estado: true };
-    const students = yield user_1.default.find(condicion);
-    if (!students) {
+    const usuarios = yield user_1.default.find(condicion);
+    if (!usuarios) {
         return res.json({
             message: "Usuarios no encontrados"
         });
     }
     res.json({
         message: "Usuarios obtenidos correctamente",
-        students
+        usuarios
     });
 });
 exports.getUsers = getUsers;
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni } = req.params;
-    const student = yield user_1.default.findOne({ dni });
-    if (!student) {
+    const usuario = yield user_1.default.findOne({ dni });
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
     }
     res.json({
         message: "Usuario obtenido correctamente",
-        student
+        usuario
     });
 });
 exports.getUser = getUser;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni } = req.params;
     const _a = req.body, { estado } = _a, data = __rest(_a, ["estado"]);
-    const student = yield user_1.default.findOneAndUpdate({ dni }, data, { new: true });
-    if (!student) {
+    const usuario = yield user_1.default.findOneAndUpdate({ dni }, data, { new: true });
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
     }
     res.json({
         message: "Usuario actualizado correctamente",
-        student
+        usuario
     });
 });
 exports.updateUser = updateUser;
 const hardDeleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni } = req.params;
-    const student = yield user_1.default.findOneAndDelete({ dni });
-    if (!student) {
+    const usuario = yield user_1.default.findOneAndDelete({ dni });
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
     }
     res.json({
         message: "Usuario eliminado correctamente",
-        student
+        usuario
     });
 });
 exports.hardDeleteUser = hardDeleteUser;
 const softDeleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { dni } = req.params;
-    const student = yield user_1.default.findOneAndUpdate({ dni }, { estado: false }, { new: true });
-    if (!student) {
+    const usuario = yield user_1.default.findOneAndUpdate({ dni }, { estado: false }, { new: true });
+    if (!usuario) {
         return res.json({
             message: "Usuario no encontrado"
         });
     }
     res.json({
         message: "Usuario eliminado correctamente",
-        student
+        usuario
     });
 });
 exports.softDeleteUser = softDeleteUser;

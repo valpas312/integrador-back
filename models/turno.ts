@@ -12,7 +12,7 @@ export interface ITurno {
 const turnoSchema = new Schema<ITurno>({
     fechayhora: { type: Date },
     reservacion: { type: Date },
-    paciente: { type: Schema.Types.ObjectId, required: true },
+    paciente: { type: Schema.Types.ObjectId, ref:"Users", required: true },
     medico: { type: String, required: true },
     especialidad: { type: String, required: true },
     estado: { type: String, default: "Pendiente a confirmar", required: true },
