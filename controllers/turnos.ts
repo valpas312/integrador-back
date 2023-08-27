@@ -6,7 +6,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 export const getTurnos = async (req: Request, res: Response) => {
     const usuarioId: ObjectId = req.body._id;
 
-    const turnos: ITurno[] = await Turno.find({ paciente: usuarioId }).populate('paciente', 'nombre').exec();
+    const turnos: ITurno[] = await Turno.find({ paciente: usuarioId }).populate('paciente', 'users').exec();
 
     res.json({
         data: [...turnos]
