@@ -1,6 +1,5 @@
 import { Response, Request } from "express";
 import Turno, { ITurno } from "../models/turno";
-import { ObjectId } from "mongoose";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const getTurnos = async (req: Request, res: Response) => {
