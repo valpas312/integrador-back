@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 
 import User, { IUser } from "../models/user";
 
@@ -10,6 +10,12 @@ const validarJWT = async (req: Request, res: Response, next: NextFunction) => {
     if (!token) {
         return res.status(401).json({
             msg: "No hay token en la petición"
+        });
+    }
+
+    if (TokenExpiredError) {
+        return res.status(401).json({
+            msg: "Token expirado"
         });
     }
 
