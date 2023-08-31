@@ -35,7 +35,6 @@ router.get('/', users_1.getUsers);
 router.get('/:dni', users_1.getUser);
 router.put('/:dni', [
     (0, express_validator_1.check)("nombre", "El nombre es obligatorio").not().isEmpty(),
-    (0, express_validator_1.check)("dni", "El dni es obligatorio").not().isEmpty(),
     (0, express_validator_1.check)("email", "El email es obligatorio").not().isEmpty(),
     (0, express_validator_1.check)("email", "El email no es válido").isEmail(),
     (0, express_validator_1.check)("contraseña", "La contraseña es obligatoria").not().isEmpty(),
