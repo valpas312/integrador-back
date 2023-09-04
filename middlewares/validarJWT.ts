@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { generarJWT } from "../helpers/generarJWT";
-
 import User, { IUser } from "../models/user";
 
 const validarJWT = async (req: Request, res: Response, next: NextFunction) => {
