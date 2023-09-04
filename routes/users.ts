@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, login, verifyUser, getUsers, getUser, updateUser, hardDeleteUser, softDeleteUser } from "../controllers/users";
+import { createUser, login, verifyUser, getUsers, getUser, hardDeleteUser, softDeleteUser } from "../controllers/users";
 import { check } from "express-validator";
 import { recolectarErrores } from "../middlewares/recolectarErrores";
 import { existeEmail } from "../helpers/validacionesDB";
@@ -33,15 +33,6 @@ router.post('/login', [
 ], login);
 router.get('/', getUsers);
 router.get('/:dni', getUser);
-router.put('/:dni', [
-    check("nombre", "El nombre es obligatorio").not().isEmpty(),
-    check("email", "El email es obligatorio").not().isEmpty(),
-    check("email", "El email no es válido").isEmail(),
-    check("contraseña", "La contraseña es obligatoria").not().isEmpty(),
-    check("contraseña", "La contraseña debe tener al menos 6 caracteres").isLength({ min: 6 }),
-    check("contraseña", "La contraseña no debe tener mas de 10 caracteres").isLength({ max: 10 }),
-    recolectarErrores
-], updateUser);
 router.delete('/:dni', hardDeleteUser);
 router.delete('/soft/:dni', softDeleteUser);
 

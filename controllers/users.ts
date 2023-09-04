@@ -98,26 +98,6 @@ export const getUser = async (req: Request, res: Response) => {
     });
 };
 
-export const updateUser = async (req: Request, res: Response) => {
-    const { dni } = req.params;
-
-    const { estado, ...data } = req.body;
-
-    const usuario = await User.findOneAndUpdate({ dni }, data, { new: true });
-
-
-    if (!usuario) {
-        return res.json({
-            message: "Usuario no encontrado"
-        });
-    }
-
-    res.json({
-        message: "Usuario actualizado correctamente",
-        usuario
-    });
-};
-
 export const hardDeleteUser = async (req: Request, res: Response) => {
     const { dni } = req.params;
 
