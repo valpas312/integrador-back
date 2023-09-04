@@ -9,7 +9,7 @@ const generarJWT = (_id) => {
     return new Promise((resolve, reject) => {
         const payload = { _id };
         jsonwebtoken_1.default.sign(payload, "clavesecreta", {
-            expiresIn: '12h'
+            expiresIn: '365d'
         }, (err, token) => {
             if (err) {
                 console.log(err);

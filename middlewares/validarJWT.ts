@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 
 import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 
+import { generarJWT } from "../helpers/generarJWT";
+
 import User, { IUser } from "../models/user";
 
 const validarJWT = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,8 +16,15 @@ const validarJWT = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (TokenExpiredError) {
+        const payload = jwt.verify(token, "clavesecreta") as JwtPayload;
+
+        const { _id } = payload;
+
+        const tokenNuevo = await generarJWT(_id);
+
         return res.status(401).json({
-            msg: "Token expirado"
+            msg: "Token expirado",
+            tokenNuevo
         });
     }
 
