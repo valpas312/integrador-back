@@ -30,6 +30,13 @@ const createTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const payload = jsonwebtoken_1.default.verify(token, "clavesecreta");
     const { _id } = payload;
     const turnoData = req.body;
+    const turnos = yield turno_1.default.find();
+    const turnoExist = turnos.find(turno => turno.fechayhora === turnoData.fechayhora);
+    if (turnoExist) {
+        return res.status(400).json({
+            msg: 'Ya existe un turno en ese horario'
+        });
+    }
     const data = new turno_1.default(Object.assign(Object.assign({}, turnoData), { reservacion: new Date(), paciente: _id, estado: "Pendiente a confirmar" }));
     const turno = new turno_1.default(data);
     yield turno.save();

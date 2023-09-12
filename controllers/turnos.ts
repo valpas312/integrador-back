@@ -25,6 +25,16 @@ export const createTurno = async (req: Request, res: Response) => {
 
     const turnoData = req.body;
 
+    const turnos: ITurno[] = await Turno.find()
+
+    const turnoExist = turnos.find(turno => turno.fechayhora === turnoData.fechayhora)
+
+    if (turnoExist) {
+        return res.status(400).json({
+            msg: 'Ya existe un turno en ese horario'
+        });
+    }
+
     const data: ITurno = new Turno({
         ...turnoData,
         reservacion: new Date(),
