@@ -27,11 +27,11 @@ export const createTurno = async (req: Request, res: Response) => {
 
     const turnos: ITurno[] = await Turno.find()
 
-    const turnoExist = turnos.find(turno => turno.fechayhora === turnoData.fechayhora)
+    const turnoExist = turnos.find(turno => turno.fechayhora && turno.medico && turno.especialidad && turno.fechayhora === turnoData.fechayhora && turno.medico === turnoData.medico && turno.especialidad === turnoData.especialidad)
 
     if (turnoExist) {
         return res.status(400).json({
-            msg: 'Ya existe un turno en ese horario'
+            msg: 'Ya existe un turno con esas caracteristicas'
         });
     }
 
