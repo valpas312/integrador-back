@@ -35,7 +35,7 @@ export const createTurno = async (req: Request, res: Response) => {
         });
     }
 
-    const medicoOcupado = turnos.find(turno => turno.fechayhora && turno.medico && turno.fechayhora === turnoData.fechayhora && turno.medico === turnoData.medico)
+    const medicoOcupado = turnos.find(turno => turno.fechayhora && turno.medico === turnoData.fechayhora && turnoData.medico)
     
     if (medicoOcupado) {
         return res.status(400).json({
