@@ -35,6 +35,14 @@ export const createTurno = async (req: Request, res: Response) => {
         });
     }
 
+    const medicoOcupado = turnos.find(turno => turno.fechayhora && turno.medico && turno.fechayhora === turnoData.fechayhora && turno.medico === turnoData.medico)
+    
+    if (medicoOcupado) {
+        return res.status(400).json({
+            msg: 'El medico ya tiene un turno en ese horario'
+        });
+    }
+
     const data: ITurno = new Turno({
         ...turnoData,
         reservacion: new Date(),

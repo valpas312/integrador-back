@@ -31,10 +31,16 @@ const createTurno = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { _id } = payload;
     const turnoData = req.body;
     const turnos = yield turno_1.default.find();
-    const turnoExist = turnos.find(turno => turno.fechayhora === turnoData.fechayhora);
+    const turnoExist = turnos.find(turno => turno.fechayhora && turno.medico && turno.especialidad && turno.fechayhora === turnoData.fechayhora && turno.medico === turnoData.medico && turno.especialidad === turnoData.especialidad);
     if (turnoExist) {
         return res.status(400).json({
-            msg: 'Ya existe un turno en ese horario'
+            msg: 'Ya existe un turno con esas caracteristicas'
+        });
+    }
+    const medicoOcupado = turnos.find(turno => turno.fechayhora && turno.medico && turno.fechayhora === turnoData.fechayhora && turno.medico === turnoData.medico);
+    if (medicoOcupado) {
+        return res.status(400).json({
+            msg: 'El medico ya tiene un turno en ese horario'
         });
     }
     const data = new turno_1.default(Object.assign(Object.assign({}, turnoData), { reservacion: new Date(), paciente: _id, estado: "Pendiente a confirmar" }));
