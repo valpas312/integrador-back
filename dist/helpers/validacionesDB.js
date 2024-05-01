@@ -18,11 +18,11 @@ const mail_1 = require("../mail/mail");
 const existeEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const existeEmail = yield user_1.default.findOne({ email });
     if (existeEmail && existeEmail.verified) {
-        throw new Error(`El email ${email} ya está registrado`);
+        throw new Error(`El email ingresado ya está registrado`);
     }
     if (existeEmail && !existeEmail.verified) {
         yield (0, mail_1.sendEmail)(email, existeEmail.code);
-        throw new Error(`El email ${email} ya está registrado pero no está verificado. Se ha enviado un nuevo código de verificación`);
+        throw new Error(`El email ingresado ya está registrado pero no está verificado. Se ha enviado un nuevo código de verificación`);
     }
 });
 exports.existeEmail = existeEmail;
